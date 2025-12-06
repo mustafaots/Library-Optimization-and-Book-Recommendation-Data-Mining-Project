@@ -1,4 +1,4 @@
 # Library-Optimization-and-Book-Recommendation-Data-Mining-Project
 Full Title: Data-Driven Library Optimization and Personalized Book Recommendation System
 
-Kaggle Dataset: `https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset/`
+This is an academic data mining project which aims to directly apply the techniques on the data set of the ENSIA library.
