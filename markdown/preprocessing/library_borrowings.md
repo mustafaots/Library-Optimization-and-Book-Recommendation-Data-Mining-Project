@@ -93,7 +93,104 @@ Due to the sensitivity of the mean to extreme values, median-based measures prov
 
 ---
 
+
+# Library Borrowing Probability Distribution Analysis
+
+## 1. Borrowing Duration Characteristics
+
+- The borrowing duration distribution is **right-skewed (positively skewed)**, indicating that:
+  - Most borrowings are **short-term**
+  - A small number of borrowings extend for **very long durations**
+- There is a **significant gap between the median and the mean**, with the mean pulled upward by long-duration outliers.
+- **IQR-based outlier detection** identifies late returns as **extreme cases**.
+- The data is **naturally bounded** between **0 and ~365+ days**, reflecting real-world borrowing constraints.
+
+---
+
+## 2. Distribution Fit: **Beta Distribution as the Best Model**
+
+### Normality Check
+- The data **does not follow a normal distribution**.
+- All applied normality tests reject normality with **p < 0.05**.
+
+### Why Beta Distribution?
+The **Beta distribution** provides the best fit among all tested distributions due to:
+
+- **Bounded support**
+  - Naturally defined on a finite interval, matching borrowing durations.
+- **Skewness flexibility**
+  - Accurately models both the high concentration of short-term borrowings and the long right tail.
+- **Flexible shape parameters (α, β)**
+  - Adapt precisely to the observed data structure.
+- **Statistical validation**
+  - Lowest **Kolmogorov–Smirnov (KS) statistic** among 7 tested distributions.
+  - Strong p-value indicating excellent alignment with empirical data.
+- **Real-world consistency**
+  - Bounded domain, unimodal peak, and heavy right tail are signature features of Beta distributions.
+
+---
+
+## 3. Reader Behavior Insights
+
+- Reader engagement is **highly variable**:
+  - Some users borrow frequently.
+  - Many borrow rarely or remain inactive.
+- A small group of **"super-readers"** accounts for a large share of borrowing activity (Pareto-like behavior).
+- The **high standard deviation** in borrowing counts confirms unequal participation.
+- A large pool of inactive or underactive readers represents a **significant growth opportunity**.
+
+---
+
+## 4. Book Popularity Distribution
+
+- Book demand is **unequally distributed**:
+  - A small number of books are borrowed very frequently.
+  - Most books are borrowed rarely or only once.
+- Many single-borrow books indicate a **diverse collection with mixed appeal**.
+- This pattern aligns with the **Pareto principle (80/20 rule)**.
+
+---
+
+## 5. Category-Based Patterns
+
+- Borrowing behavior varies across:
+  - Different student years.
+  - Teachers vs. students.
+- Some categories:
+  - Borrow more frequently.
+  - Keep books for longer durations.
+- These differences enable **targeted recommendations** and **personalized library services**.
+
+---
+
+## 6. Practical Implications (Using the Beta Distribution)
+
+### Forecasting
+- Use estimated Beta parameters to:
+  - Predict borrowing durations.
+  - Construct reliable confidence intervals.
+
+### Inventory Planning
+- Stock high-demand books more heavily.
+- Archive or rotate books borrowed only once.
+
+### Retention Strategy
+- Focus engagement efforts on inactive readers.
+- Convert underutilized users into active borrowers.
+
+### Late Return Prevention
+- Identify high-risk borrowings using Beta-based probabilities.
+- Implement targeted reminders before expected overdue dates.
+
+### Risk Management
+- Predict return dates more accurately using a **bounded Beta model**, avoiding unrealistic predictions from unbounded distributions like the normal distribution.
+
+---
+
+
 ## Conclusion
 The exploratory analysis reveals that library borrowing patterns are characterized by short borrowing durations, strong category imbalances, and high concentration around a limited number of popular academic titles. While average statistics provide a general overview, visual analysis highlights the importance of considering distribution shape and outliers when interpreting borrowing behavior.
+
+Modeling borrowing durations with the **Beta distribution** provides a statistically sound and practically meaningful framework. It aligns with real-world constraints, captures skewness and outliers effectively, and supports better forecasting, planning, and decision-making in library management.
 
 These insights provide a solid foundation for further analysis, such as user behavior modeling, demand forecasting, or policy evaluation regarding borrowing limits and category management.
