@@ -114,19 +114,29 @@ Due to the sensitivity of the mean to extreme values, median-based measures prov
 - All applied normality tests reject normality with **p < 0.05**.
 
 ### Why Beta Distribution?
-The **Beta distribution** provides the best fit among all tested distributions due to:
+The **Beta distribution** provides the best fit among all tested distributions, though the fit quality remains **POOR** (p-value < 0.05 for all tested distributions):
+
+**Beta Distribution Parameters:**
+- **Alpha (α): 1.4687** - Controls shape; α < 1 skews distribution right
+- **Beta (β): 12,868,555,301.26** - Extreme value indicates heavily right-skewed data
+- **Location: 6.6218** - Lower bound of the distribution
+- **Scale: 86,794,325,792.05** - Range parameter
+- **Kolmogorov–Smirnov Statistic: 0.3444** - Lowest among 7 tested distributions
+- **P-value: < 0.000001** - Indicates model doesn't perfectly fit (expected for real-world data)
+
+### Reasoning for Beta Distribution Selection:
+Despite poor p-values across all distributions, Beta distribution is **most appropriate** because:
 
 - **Bounded support**
-  - Naturally defined on a finite interval, matching borrowing durations.
-- **Skewness flexibility**
-  - Accurately models both the high concentration of short-term borrowings and the long right tail.
+  - Naturally defined on a finite interval, matching real borrowing constraints.
+- **Skewness handling**
+  - Captures the observed right-skew with high concentration of short-term borrowings and long tail.
 - **Flexible shape parameters (α, β)**
-  - Adapt precisely to the observed data structure.
-- **Statistical validation**
-  - Lowest **Kolmogorov–Smirnov (KS) statistic** among 7 tested distributions.
-  - Strong p-value indicating excellent alignment with empirical data.
-- **Real-world consistency**
-  - Bounded domain, unimodal peak, and heavy right tail are signature features of Beta distributions.
+  - Adapt to extreme skewness in the empirical data.
+- **Relative performance**
+  - Lowest KS statistic (0.3444) compared to Power Law (0.3967), Chi-Square (0.4086), Exponential (0.4157), Normal (0.4394), Log-Normal (0.5226), and Gamma (0.5938).
+- **Real-world applicability**
+  - Bounded domain prevents unrealistic predictions (e.g., negative durations or durations beyond physically possible limits).
 
 ---
 
@@ -191,6 +201,10 @@ The **Beta distribution** provides the best fit among all tested distributions d
 ## Conclusion
 The exploratory analysis reveals that library borrowing patterns are characterized by short borrowing durations, strong category imbalances, and high concentration around a limited number of popular academic titles. While average statistics provide a general overview, visual analysis highlights the importance of considering distribution shape and outliers when interpreting borrowing behavior.
 
-Modeling borrowing durations with the **Beta distribution** provides a statistically sound and practically meaningful framework. It aligns with real-world constraints, captures skewness and outliers effectively, and supports better forecasting, planning, and decision-making in library management.
+**Beta distribution** emerges as the **best-fit model** among all tested theoretical distributions, though statistical tests indicate that no single parametric distribution perfectly captures the empirical data (all p-values < 0.05). However, the Beta distribution remains the **most practical choice** because:
+- It respects real-world constraints with a bounded domain
+- It captures the observed right-skewness and outlier behavior better than alternatives
+- It prevents unrealistic predictions (e.g., negative durations)
+- Practitioners should recognize that the fit is **relative, not absolute**, and supplement parametric modeling with empirical methods for critical decisions
 
-These insights provide a solid foundation for further analysis, such as user behavior modeling, demand forecasting, or policy evaluation regarding borrowing limits and category management.
+These insights provide a solid foundation for further analysis, such as user behavior modeling, demand forecasting, or policy evaluation regarding borrowing limits and category management. Hybrid approaches combining Beta distribution insights with empirical borrowing patterns may yield more robust results for operational planning.
