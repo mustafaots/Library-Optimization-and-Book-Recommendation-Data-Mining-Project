@@ -107,36 +107,23 @@ Due to the sensitivity of the mean to extreme values, median-based measures prov
 
 ---
 
-## 2. Distribution Fit: **Beta Distribution as the Best Model**
+## 2. Distribution Fit: Comparative KS-based Results
 
 ### Normality Check
-- The data **does not follow a normal distribution**.
-- All applied normality tests reject normality with **p < 0.05**.
+- The borrowing-duration data does **not** follow a normal distribution; normality tests reject normality (p < 0.05).
 
-### Why Beta Distribution?
-The **Beta distribution** provides the best fit among all tested distributions, though the fit quality remains **POOR** (p-value < 0.05 for all tested distributions):
+### Updated fit approach
+- The notebook performs a comprehensive Kolmogorov–Smirnov (KS) comparison across several candidate distributions (Normal, Exponential, Gamma, Log-Normal, Chi-Square, Power Law, Beta, etc.) and ranks them by KS statistic (lower is better). The ranking can change when preprocessing or cleaning steps are modified, so re-run the comparison cell to obtain the current ranking.
 
-**Beta Distribution Parameters:**
-- **Alpha (α): 1.4687** - Controls shape; α < 1 skews distribution right
-- **Beta (β): 12,868,555,301.26** - Extreme value indicates heavily right-skewed data
-- **Location: 6.6218** - Lower bound of the distribution
-- **Scale: 86,794,325,792.05** - Range parameter
-- **Kolmogorov–Smirnov Statistic: 0.3444** - Lowest among 7 tested distributions
-- **P-value: < 0.000001** - Indicates model doesn't perfectly fit (expected for real-world data)
+### How to obtain the current best-fit
+- Run the notebook cell titled **"11. COMPREHENSIVE DISTRIBUTION COMPARISON"**. It prints a ranked table of KS statistics and p-values and states the current "Best Fit" at the top.
+- Use the KS statistic primarily to rank candidate models; use p-values for plausibility (p > 0.05 indicates the test does not reject the null that the samples come from the same distribution). If all p-values are < 0.05, choose the distribution with the lowest KS and consider domain constraints.
 
-### Reasoning for Beta Distribution Selection:
-Despite poor p-values across all distributions, Beta distribution is **most appropriate** because:
-
-- **Bounded support**
-  - Naturally defined on a finite interval, matching real borrowing constraints.
-- **Skewness handling**
-  - Captures the observed right-skew with high concentration of short-term borrowings and long tail.
-- **Flexible shape parameters (α, β)**
-  - Adapt to extreme skewness in the empirical data.
-- **Relative performance**
-  - Lowest KS statistic (0.3444) compared to Power Law (0.3967), Chi-Square (0.4086), Exponential (0.4157), Normal (0.4394), Log-Normal (0.5226), and Gamma (0.5938).
-- **Real-world applicability**
-  - Bounded domain prevents unrealistic predictions (e.g., negative durations or durations beyond physically possible limits).
+### Practical selection criteria
+- Combine statistical ranking (KS, p-value) with domain knowledge:
+  - Prefer bounded distributions when appropriate (borrowing durations are non-negative and practically bounded).
+  - Prefer distributions that model right-skew and long-tail behavior when those properties are present.
+  - Use visual checks (histogram + fitted PDF overlay, Q–Q plots) in addition to KS/p-values.
 
 ---
 
@@ -192,19 +179,19 @@ Despite poor p-values across all distributions, Beta distribution is **most appr
 - Identify high-risk borrowings using Beta-based probabilities.
 - Implement targeted reminders before expected overdue dates.
 
-### Risk Management
-- Predict return dates more accurately using a **bounded Beta model**, avoiding unrealistic predictions from unbounded distributions like the normal distribution.
-
 ---
 
 
 ## Conclusion
-The exploratory analysis reveals that library borrowing patterns are characterized by short borrowing durations, strong category imbalances, and high concentration around a limited number of popular academic titles. While average statistics provide a general overview, visual analysis highlights the importance of considering distribution shape and outliers when interpreting borrowing behavior.
+The exploratory analysis shows that library borrowing behavior is dominated by short-duration loans, category imbalances, and a small set of frequently borrowed titles. Visual analysis and summary statistics (median, IQR, skewness) are essential because the mean is sensitive to late-return outliers.
 
-**Beta distribution** emerges as the **best-fit model** among all tested theoretical distributions, though statistical tests indicate that no single parametric distribution perfectly captures the empirical data (all p-values < 0.05). However, the Beta distribution remains the **most practical choice** because:
-- It respects real-world constraints with a bounded domain
-- It captures the observed right-skewness and outlier behavior better than alternatives
-- It prevents unrealistic predictions (e.g., negative durations)
-- Practitioners should recognize that the fit is **relative, not absolute**, and supplement parametric modeling with empirical methods for critical decisions
+Key takeaways about distribution modeling:
+- No single parametric distribution perfectly captures the empirical borrowing-duration distribution (multiple tests often return p < 0.05).
+- The notebook's KS-based ranking should be used to pick a working model: re-run **"11. COMPREHENSIVE DISTRIBUTION COMPARISON"** to obtain the current ranked results and parameters before using a parametric model in production.
+- When statistical tests conflict, prioritize practical constraints (e.g., bounded support) and visual fit (histogram + PDF/Q–Q plots). A bounded, skew-capable model is often preferable in practice but must be validated on the current cleaned data.
 
-These insights provide a solid foundation for further analysis, such as user behavior modeling, demand forecasting, or policy evaluation regarding borrowing limits and category management. Hybrid approaches combining Beta distribution insights with empirical borrowing patterns may yield more robust results for operational planning.
+Recommended next steps:
+- Re-run the distribution-comparison cell to capture the current top-ranked model and parameters, then record those values in this report.
+- If no parametric model provides an adequate fit, supplement with empirical (non-parametric) methods such as kernel density estimation or bootstrap-based prediction intervals.
+
+These results form a practical basis for short-term forecasting, inventory planning, and late-return risk management, provided the chosen model is validated on the latest preprocessed dataset.
